@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker rm ous; docker run -p 5900:5900 --name ous -it -v /home/iang/firefox-build:/home/iang/firefox-build --net=none slitheen /bin/bash

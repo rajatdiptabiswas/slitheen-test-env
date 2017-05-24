@@ -1,0 +1,1 @@
+docker rm relay; docker run --privileged --name relay -it -v /home/iang/uw/research/slitheen/git/code:/home/iang/slitheen_code slitheen /bin/bash

@@ -1,0 +1,9 @@
+koko -d relay,veth2,172.17.31.1/24 -d ous,veth0,172.17.31.2/16 || exit 1
+docker exec --privileged -u root relay ethtool -K eth0 tso off
+docker exec --privileged -u root relay ethtool -K eth0 gro off
+docker exec --privileged -u root relay ethtool -K eth0 gso off
+docker exec --privileged -u root relay ethtool -K veth2 tso off
+docker exec --privileged -u root relay ethtool -K veth2 gro off
+docker exec --privileged -u root relay ethtool -K veth2 gso off
+docker exec --privileged -u root ous route add default gw 172.17.0.1
+docker exec --privileged -u root relay bash -c "echo 0 > /proc/sys/net/ipv4/ip_forward"
