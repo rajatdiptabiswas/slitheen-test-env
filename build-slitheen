@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cd slitheen-docker && docker build -t slitheen .
