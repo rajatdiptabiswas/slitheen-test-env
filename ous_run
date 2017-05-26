@@ -4,5 +4,5 @@
 . testenv_config
 
 docker network create vnc >/dev/null 2>&1
-# docker rm ous; docker run -p 5900:5900 --name ous -it -v ${SLITHEEN_FIREFOX_REPO}:/home/iang/firefox --net=vnc slitheen /bin/bash -c 'echo "Waiting for veth to appear..."; while ! ifconfig veth0 >/dev/null 2>&1; do sleep 1; done; sleep 1; ./start_x; export SLITHEEN_PATH=/home/iang/firefox/pubkey; cd firefox && ./mach run'
-docker rm ous; docker run -p 5900:5900 --name ous -it -v ${SLITHEEN_FIREFOX_REPO}:/home/iang/firefox --net=vnc slitheen /bin/bash -c 'cd firefox && bash'
+# docker rm ous; docker run -p 5900:5900 --name ous -it -v ${SLITHEEN_FIREFOX_REPO}:/home/iang/firefox --net=vnc slitheen /bin/bash -c 'echo "Waiting for veth to appear..."; while ! ifconfig veth0 >/dev/null 2>&1; do sleep 1; done; sleep 1; ./start_x; export SLITHEEN_PUBKEY=/home/iang/firefox/pubkey; cd firefox && ./mach run'
+docker rm ous; docker run -p 5900:5900 --name ous -it -v ${SLITHEEN_FIREFOX_REPO}:/home/iang/firefox --net=vnc slitheen /bin/bash -c './start_x; export SLITHEEN_PUBKEY=/home/iang/firefox/pubkey; cd firefox && bash'
