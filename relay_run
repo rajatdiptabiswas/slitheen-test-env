@@ -1,1 +1,7 @@
-docker rm relay; docker run --privileged --name relay -it -v /home/iang/uw/research/slitheen/git/code:/home/iang/slitheen_code slitheen /bin/bash
+#!/bin/bash
+
+./mktestenvconfig || exit 1
+. testenv_config
+
+# docker rm relay; docker run --privileged --name relay -it -v ${SLITHEEN_CODE_REPO}:/home/iang/slitheen_code slitheen /bin/bash -c 'echo "Waiting for veth to appear..."; while ! ifconfig veth1 >/dev/null 2>&1; do sleep 1; done; sleep 1; cd slitheen_code/relay_station && bash'
+docker rm relay; docker run --privileged --name relay -it -v ${SLITHEEN_CODE_REPO}:/home/iang/slitheen_code slitheen /bin/bash -c 'cd slitheen_code/relay_station && bash'
