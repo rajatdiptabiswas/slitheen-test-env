@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ -e testenv_config ]; then
+    ret=0
+    . testenv_config
+    if [ -e "${SLITHEEN_FIREFOX_REPO}/mach" ]; then
+        echo "SLITHEEN_FIREFOX_REPO appears OK"
+    else
+        echo "SLITHEEN_FIREFOX_REPO not set correctly: cannot find ${SLITHEEN_FIREFOX_REPO}/mach"
+        ret=1
+    fi
+
+    if [ -e "${SLITHEEN_CODE_REPO}/relay_station/slitheen-proxy.c" ]; then
+        echo "SLITHEEN_CODE_REPO appears OK"
+    else
+        echo "SLITHEEN_CODE_REPO not set correctly: cannot find ${SLITHEEN_CODE_REPO}/relay_station/slitheen-proxy.c"
+        ret=1
+    fi
+    if [ "$ret" = "1" ]; then
+        echo ""
+        echo "Please edit the testenv_config file."
+    fi
+    exit $ret
+fi
+
+cat <<EOF >testenv_config
+## The full path to your checked-out copy of the firefox repo
+SLITHEEN_FIREFOX_REPO=/somewhere/firefox
+
+## The full path to your checked-out copy of the slitheen code repo
+SLITHEEN_CODE_REPO=/somewhere/slitheen/code
+EOF
+
+echo "Please edit the paths in the testenv_config file."
+exit 1
