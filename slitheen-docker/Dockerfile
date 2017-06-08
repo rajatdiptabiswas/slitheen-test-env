@@ -1,6 +1,6 @@
 FROM ff_build_bootstrapped
 RUN sudo apt-get update
-RUN sudo apt-get install -y inetutils-ping libssl-dev libpcap0.8-dev ethtool tcpdump valgrind iptables telnet less
+RUN sudo apt-get install -y inetutils-ping libpcap0.8-dev ethtool tcpdump valgrind iptables telnet less dpkg-dev lsb-release
 WORKDIR /tmp/
 RUN wget https://www.openssl.org/source/openssl-1.1.0f.tar.gz
 RUN tar xzvf openssl-1.1.0f.tar.gz
