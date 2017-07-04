@@ -4,6 +4,7 @@ docker exec --privileged -u root relay ethtool -K eth0 tso off gro off gso off
 docker exec --privileged -u root relay ethtool -K veth1 tso off gro off gso off
 docker exec --privileged -u root relay ifconfig eth0 mtu 9000
 docker exec --privileged -u root relay ifconfig veth1 mtu 9000
+docker exec --privileged -u root ous ifconfig veth0 mtu 9000
 docker exec --privileged -u root ous route del default gw 172.18.0.1
 docker exec --privileged -u root ous route add default gw 172.17.0.1
 docker exec --privileged -u root relay bash -c "echo 0 > /proc/sys/net/ipv4/ip_forward"
