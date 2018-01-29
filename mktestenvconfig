@@ -10,10 +10,10 @@ if [ -e testenv_config ]; then
         ret=1
     fi
 
-    if [ -e "${SLITHEEN_CODE_REPO}/relay_station/slitheen-proxy.c" ]; then
+    if [ -e "${SLITHEEN_CODE_REPO}/relay_station/slitheen.c" ]; then
         echo "SLITHEEN_CODE_REPO appears OK"
     else
-        echo "SLITHEEN_CODE_REPO not set correctly: cannot find ${SLITHEEN_CODE_REPO}/relay_station/slitheen-proxy.c"
+        echo "SLITHEEN_CODE_REPO not set correctly: cannot find ${SLITHEEN_CODE_REPO}/relay_station/slitheen.c"
         ret=1
     fi
     if [ "$ret" = "1" ]; then
