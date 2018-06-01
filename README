@@ -1,0 +1,65 @@
+These are instructions for setting up a test environment for slitheen!
+
+0. Dependencies
+
+- You must have the most recent version of Docker installed. For detailed instructions on how to do this, visit: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+
+- You must install koko. For instructions to build from source, or binaries, visit: https://github.com/redhat-nfvpe/koko/releases
+
+1. Setting up the docker containers
+
+There are two different docker containers: one for the client, and one for the relay station. These containers will be networked together such that the client's traffic is routed through the relay station.
+
+    A. Setting up the client docker container
+
+    - The client container must build our modified version of firefox. Firefox has an intense bootstrapping process, so download https://cs.uwaterloo.ca/~cbocovic/ff_bootstrapped_2018_03_25.tar.gz and run
+    bzcat ff_build_bootstrapped.tar.bz2 | docker load
+
+    - clone the firefox and slitheen repositories
+
+        hg clone ssh://hg@git-crysp.uwaterloo.ca/firefox
+        git clone git@git-crysp.uwaterloo.ca:slitheen/code
+
+    - edit testenv_config to point to these two repositories
+
+    - run ./mktestenvconfig
+
+    - run ./ous_run
+
+    - build firefox by running ./mach build (this will take a while)
+
+    B. Setting up the relay station docker container
+
+    - run ./relay_run
+
+    - run make
+
+    C. Setting up networking
+
+    - To network the two containers, run ./net_run
+
+    - on the host machine, follow the instructions to disable TCP offloading, as directed by the output of net_run.
+
+    D. Check to make sure network is properly set up
+
+    - run sudo ./slitheen veth1 eth0
+
+    - you should be able to ping 8.8.8.8 from the client machine
+
+2. Running tests
+
+    You will need 5 terminals for this task:
+
+    A. ./relay_run
+        - inside the relay station container, run
+            sudo ./slitheen veth1 eth0
+    B. ./ous_run
+        - inside the ous container, run ./mach run to start firefox
+
+    C. ./socks_run
+        - inside another instance of the ous container, run ./socks
+
+    D. vncviewer localhost (password: 1234) to view firefox
+
+    E. connect to localhost:1080 to proxy to covert site.
+
