@@ -25,10 +25,10 @@ hg checkout slitheen
 cd ..
 
 # Get the slitheen code repo
-git clone git@git-crysp.uwaterloo.ca:slitheen/code
+git clone gogs@git-crysp.uwaterloo.ca:cbocovic/slitheen.git
 
 # Get the build and test environments
-git clone git@git-crysp.uwaterloo.ca:slitheen/testenv
+git clone gogs@git-crysp.uwaterloo.ca:cbocovic/testenv.git
 cd testenv
 ./build-slitheen
 ./mktestenvconfig
