@@ -19,7 +19,7 @@ docker load < ff_bootstrapped_2018_03_25.tar.gz
 rm ff_bootstrapped_2018_03_25.tar.gz
 
 # Get the slifox hg repo
-hg clone ssh://hg@git-crysp.uwaterloo.ca/firefox
+hg clone https://git-crysp.uwaterloo.ca/hg/slifox
 cd firefox
 hg checkout slitheen
 cd ..
