@@ -10,10 +10,16 @@ if [ -e testenv_config ]; then
         ret=1
     fi
 
-    if [ -e "${SLITHEEN_CODE_REPO}/relay_station/slitheen.c" ]; then
-        echo "SLITHEEN_CODE_REPO appears OK"
+    if [ -e "${SLITHEEN_RELAY_REPO}/slitheen.c" ]; then
+        echo "SLITHEEN_RELAY_REPO appears OK"
     else
-        echo "SLITHEEN_CODE_REPO not set correctly: cannot find ${SLITHEEN_CODE_REPO}/relay_station/slitheen.c"
+        echo "SLITHEEN_RELAY_REPO not set correctly: cannot find ${SLITHEEN_RELAY_REPO}/slitheen.c"
+        ret=1
+    fi
+    if [ -e "${SLITHEEN_CLIENT_REPO}/socks5proxy.c" ]; then
+        echo "SLITHEEN_CLIENT_REPO appears OK"
+    else
+        echo "SLITHEEN_CLIENT_REPO not set correctly: cannot find ${SLITHEEN_CLIENT_REPO}/socks5proxy.c"
         ret=1
     fi
     if [ "$ret" = "1" ]; then
@@ -25,10 +31,13 @@ fi
 
 cat <<EOF >testenv_config
 ## The full path to your checked-out copy of the firefox repo
-SLITHEEN_FIREFOX_REPO=/somewhere/firefox
+SLITHEEN_FIREFOX_REPO=/somewhere/slifox
 
-## The full path to your checked-out copy of the slitheen code repo
-SLITHEEN_CODE_REPO=/somewhere/slitheen/code
+## The full path to your checked-out copy of the slitheen relay repo
+SLITHEEN_RELAY_REPO=/somewhere/slitheen/slitheen-relay
+
+## The full path to your checked-out copy of the slitheen client repo
+SLITHEEN_CLIENT_REPO=/somewhere/slitheen/slitheen-client
 EOF
 
 echo "Please edit the paths in the testenv_config file."

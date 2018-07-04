@@ -19,21 +19,20 @@ docker load < ff_bootstrapped_2018_03_25.tar.gz
 rm ff_bootstrapped_2018_03_25.tar.gz
 
 # Get the slifox hg repo
-hg clone https://git-crysp.uwaterloo.ca/hg/slifox
-cd firefox
-hg checkout slitheen
-cd ..
+git clone git@gitlab.com:slitheen/slifox.git
 
-# Get the slitheen code repo
-git clone gogs@git-crysp.uwaterloo.ca:cbocovic/slitheen.git
+# Get the slitheen code repos
+git clone git@gitlab.com:slitheen/slitheen-client.git
+git clone git@gitlab.com:slitheen/slitheen-relay.git
 
 # Get the build and test environments
-git clone gogs@git-crysp.uwaterloo.ca:cbocovic/testenv.git
+git clone git@gitlab.com:slitheen/test-env.git
 cd testenv
 ./build-slitheen
 ./mktestenvconfig
-sed -i s,/somewhere/firefox,$(cd ..; /bin/pwd)/firefox, testenv_config
-sed -i s,/somewhere/slitheen/code,$(cd ..; /bin/pwd)/code, testenv_config
+sed -i s,/somewhere/slifox,$(cd ..; /bin/pwd)/slifox, testenv_config
+sed -i s,/somewhere/slitheen/slitheen-relay,$(cd ..; /bin/pwd)/slitheen-relay, testenv_config
+sed -i s,/somewhere/slitheen/slitheen-client,$(cd ..; /bin/pwd)/slitheen-client, testenv_config
 
 # Start the slifox docker
 ./ous_run
@@ -41,7 +40,7 @@ sed -i s,/somewhere/slitheen/code,$(cd ..; /bin/pwd)/code, testenv_config
     # Inside that docker, build slifox and the socks proxy and exit the
     # docker when finished
     ./mach build   # This will take a while
-    cd ../slitheen_code/client
+    cd ../client
     make
     exit
 
@@ -51,15 +50,15 @@ sed -i s,/somewhere/slitheen/code,$(cd ..; /bin/pwd)/code, testenv_config
     # Inside that docker, build the slitheen relay
     make
     # Build the key generator and run it
-    /cd ../telex-tag-v3/
-    make genkeys
+    cd keygen
+    make
     ./genkeys
     exit
 
 # Copy the private and public keys to the right places
-cp ../code/telex-tag-v3/privkey ../code/relay_station/
-cp ../code/telex-tag-v3/pubkey ../firefox/
-cp ../code/telex-tag-v3/pubkey ../code/client/
+cp ../slitheen-relay/keygen/privkey ../slitheen-relay
+cp ../slitheen-relay/keygen/pubkey ../slifox/
+cp ../slitheen-relay/keygen/pubkey ../slitheen-client/
 
 #### RUNNING
 
