@@ -13,10 +13,10 @@
 mkdir slitheen; cd slitheen
 
 # Get the bootstrapped docker image for building slifox
-wget https://cs.uwaterloo.ca/~cbocovic/ff_bootstrapped_2018_03_25.tar.gz
-echo '6c45728775474f5fdae4b0c7477b1ca71271357cfb04fd29446c99b5ea4adf7b  ff_bootstrapped_2018_03_25.tar.gz' | sha256sum -c
-docker load < ff_bootstrapped_2018_03_25.tar.gz
-rm ff_bootstrapped_2018_03_25.tar.gz
+wget https://cs.uwaterloo.ca/~cbocovic/ff_bootstrapped_2018_10_29.tar.gz
+echo 'c3ebe2f3c06347cf4feb4db8660cc78c8641df680249f7ea4b6bcba4dc3e6cbe  ff_bootstrapped_2018_10_29.tar.gz' | sha256sum -c
+docker load < ff_bootstrapped_2018_10_29.tar.gz
+rm ff_bootstrapped_2018_10_29.tar.gz
 
 # Get the slifox hg repo
 git clone git@gitlab.com:slitheen/slifox.git
