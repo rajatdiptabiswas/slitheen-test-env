@@ -7,7 +7,8 @@
 #   git (2.7.4)
 #   mercurial (3.7.3)
 #   vncviewer
-#   koko (v0.61) from https://github.com/redhat-nfvpe/koko/releases
+#   go (>= 1.7)
+#   koko (go get github.com/redhat-nfvpe/koko)
 #     koko should be installed with owner root, group docker, and mode 04750
 
 mkdir slitheen; cd slitheen
