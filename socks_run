@@ -3,4 +3,4 @@
 ./mktestenvconfig || exit 1
 . testenv_config
 
-docker exec --privileged -it ous bash -c "cd slitheen_code/client && bash"
+docker exec --privileged -it ous bash -c "cd client && bash"
