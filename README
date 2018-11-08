@@ -5,7 +5,6 @@
 # Requirements (with versions I used):
 #   docker (18.03.1-ce)
 #   git (2.7.4)
-#   mercurial (3.7.3)
 #   vncviewer
 #   go (>= 1.7)
 #   koko (go get github.com/redhat-nfvpe/koko)
@@ -13,11 +12,7 @@
 
 mkdir slitheen; cd slitheen
 
-# Get the bootstrapped docker image for building slifox
-wget https://cs.uwaterloo.ca/~cbocovic/ff_bootstrapped_2018_10_29.tar.gz
-echo 'c3ebe2f3c06347cf4feb4db8660cc78c8641df680249f7ea4b6bcba4dc3e6cbe  ff_bootstrapped_2018_10_29.tar.gz' | sha256sum -c
-docker load < ff_bootstrapped_2018_10_29.tar.gz
-rm ff_bootstrapped_2018_10_29.tar.gz
+echo "Fetching Slitheen repositories"
 
 # Get the slifox hg repo
 git clone git@gitlab.com:slitheen/slifox.git
@@ -26,7 +21,9 @@ git clone git@gitlab.com:slitheen/slifox.git
 git clone git@gitlab.com:slitheen/slitheen-client.git
 git clone git@gitlab.com:slitheen/slitheen-relay.git
 
-# Get the build and test environments
+echo "Building and configuring the Docker containers (this may take a while...)"
+
+# Get the build and test environments (Note: this may take a long time)
 git clone git@gitlab.com:slitheen/test-env.git
 cd testenv
 ./build-slitheen
