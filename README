@@ -15,16 +15,16 @@ mkdir slitheen; cd slitheen
 echo "Fetching Slitheen repositories"
 
 # Get the slifox hg repo
-git clone git@gitlab.com:slitheen/slifox.git
+git clone https://gitlab.com/slitheen/slifox.git
 
 # Get the slitheen code repos
-git clone git@gitlab.com:slitheen/slitheen-client.git
-git clone git@gitlab.com:slitheen/slitheen-relay.git
+git clone https://gitlab.com/slitheen/slitheen-client.git
+git clone https://gitlab.com/slitheen/slitheen-relay.git
 
 echo "Building and configuring the Docker containers (this may take a while...)"
 
 # Get the build and test environments (Note: this may take a long time)
-git clone git@gitlab.com:slitheen/test-env.git
+git clone https://gitlab.com/slitheen/test-env.git
 cd testenv
 ./build-slitheen
 ./mktestenvconfig
