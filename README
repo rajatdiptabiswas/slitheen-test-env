@@ -2,11 +2,13 @@
 
 # Instructions to build slitheen (client and proxy)
 
-# Requirements (with versions I used):
-#   docker (18.03.1-ce)
+# Requirements (with versions I used, if relevant):
+#   ethtool
+#   docker.io (18.03.1-ce)
+#       be sure to set up Docker for use without sudo by adding the user to the Docker group
 #   git (2.7.4)
 #   vncviewer
-#   go (>= 1.7)
+#   golang (>= 1.7)
 #   koko (go get github.com/redhat-nfvpe/koko)
 #     koko should be installed with owner root, group docker, and mode 04750
 
@@ -25,7 +27,7 @@ echo "Building and configuring the Docker containers (this may take a while...)"
 
 # Get the build and test environments (Note: this may take a long time)
 git clone https://gitlab.com/slitheen/test-env.git
-cd testenv
+cd test-env
 ./build-slitheen
 ./mktestenvconfig
 sed -i s,/somewhere/slifox,$(cd ..; /bin/pwd)/slifox, testenv_config
@@ -74,7 +76,7 @@ D. ./net_run
     # Run (as root) the ethtool commands it outputs, if any
 
 # Still in D:
-    vncviewer localhost # password: 1234 to view slifox
+    vncviewer localhost
 
 # In A:
     sudo ./slitheen veth1 eth0
