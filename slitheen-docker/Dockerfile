@@ -1,7 +1,9 @@
 FROM ubuntu:16.04
-RUN apt-get update && apt-get install -y wget python clang clang-tools-6.0 sudo
+RUN apt-get update && apt-get install -y wget python python3-pip clang clang-tools-6.0 sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common
+RUN pip3 install selenium
+RUN pip3 install numpy
 #user stuff
-RUN useradd -ms /bin/bash slitheen
+RUN useradd -u 23739 -U -ms /bin/bash slitheen
 RUN adduser slitheen sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER slitheen
@@ -11,7 +13,6 @@ ENV SHELL=/bin/bash
 RUN wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py
 RUN python bootstrap.py --application-choice=browser --no-interactive; exit 0
 RUN rm bootstrap.py
-RUN sudo apt-get install -y inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common
 #openssl
 WORKDIR /tmp/
 RUN wget https://www.openssl.org/source/openssl-1.1.0f.tar.gz
