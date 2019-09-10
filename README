@@ -65,6 +65,9 @@ cp ../slitheen-relay/keygen/pubkey ../slitheen-client/
 # You will need four terminals, each starting in the testenv directory
 # (start them in this order):
 
+# [NOTE] Any errors having to do with veth0 or veth1 can usually be solved
+# by running `ifconfig veth{0,1} down`
+
 A. ./relay_run
 
 B. ./ous_run
@@ -74,19 +77,34 @@ C. ./socks_run
 D. ./net_run
 
     # Run (as root) the ethtool commands it outputs, if any
+    # [ERROR] Cannot get device udp-fragmentation-offload settings: Operation not supported: This error is expected
 
+# If on remote machine, run the following on your local machine;
+    ssh -L 5900:localhost:5900 <remote machine name>
+    vncviewer localhost
+
+# If not using a remote machine:
 # Still in D:
     vncviewer localhost
 
 # In A:
     sudo ./slitheen veth1 eth0
 
+   # [ERROR] Failed to activate device: delete veth0 and try again
+
 # In B:
-    ./mach run  # Wait for it to start up
+    
+    # To start Slifox
+    sudo ./mach run  # Wait for it to start up
+    # [ERROR] Running Nightly as root in a regular user's session is not supported: 
+   
+   # To start the OUS
+   cd ../client/client/ous/
+   python3 slifox_driver.py
 
 # In C:
     ./socks
 
 
-# Now point your browser's SOCKS proxy to localhost:1080 while you load
-# youtube videos in slifox
+# If you start Slifox without the OUS now point your browser's SOCKS proxy to localhost:1080 while you load
+# youtube videos in slifox. Otherwise the OUS will load content on its own.
