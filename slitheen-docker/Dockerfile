@@ -1,18 +1,44 @@
-FROM ubuntu:16.04
-RUN apt-get update && apt-get install -y wget python python3-pip clang clang-tools-6.0 sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common
+FROM ubuntu:18.04
+RUN apt-get update && apt-get install -y wget python python3-pip clang clang-tools-6.0 sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common aptitude npm
 RUN pip3 install selenium
 RUN pip3 install numpy
+RUN npm install -g n
+RUN n stable
 #user stuff
-RUN useradd -u 23739 -U -ms /bin/bash slitheen
+RUN groupadd -g GROUP_ID slitheen
+RUN useradd -u USER_ID -g slitheen -ms /bin/bash slitheen
 RUN adduser slitheen sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER slitheen
 WORKDIR /home/slitheen
 ENV SHELL=/bin/bash
+
+##Additional bootstrap requirements for Debian/Ubuntu
+# the required (old) version of autoconf
+RUN sudo aptitude install -y autoconf2.13
+#
+# the headers of important libs
+RUN sudo aptitude install -y libgtk-3-dev
+RUN sudo aptitude install -y libgconf2-dev
+RUN sudo aptitude install -y libdbus-glib-1-dev
+RUN sudo aptitude install -y libpulse-dev
+
 #firefox bootstrap
 RUN wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py
-RUN python bootstrap.py --application-choice=browser --no-interactive; exit 0
+RUN sudo python bootstrap.py --vcs=git --application-choice=browser --no-interactive; exit 0;
 RUN rm bootstrap.py
+
+# rust dependencies
+RUN sudo ./.cargo/bin/cargo install cbindgen
+
+RUN hg clone https://hg.mozilla.org/mozilla-central
+WORKDIR mozilla-central
+RUN sudo ./mach bootstrap --application-choice=browser --no-interactive; exit 0;
+WORKDIR /home/slitheen
+RUN rm -rf mozilla-central
+
+# an assembler for compiling webm
+RUN sudo aptitude install -y yasm
 #openssl
 WORKDIR /tmp/
 RUN wget https://www.openssl.org/source/openssl-1.1.0f.tar.gz
@@ -29,19 +55,20 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 RUN sudo ldconfig
 #Only for dev work...
 #RUN apt-get install -y tcpdump valgrind iptables telnet less
-RUN sudo apt-get install -y gstreamer1.0-fluendo-mp3 gstreamer1.0-libav \
-  gstreamer1.0-plugins-bad gstreamer1.0-plugins-bad-faad \
-  gstreamer1.0-plugins-bad-videoparsers gstreamer1.0-plugins-base \
-  gstreamer1.0-plugins-ugly gstreamer1.0-plugins-ugly-amr i965-va-driver \
-  liba52-0.7.4 libaacs0 libasound2-plugins libass5 libavcodec-extra \
-  libavcodec-ffmpeg-extra56 libavfilter-ffmpeg5 libavformat-ffmpeg56 \
-  libavresample-ffmpeg2 libavutil-ffmpeg54 libbdplus0 libbluray1 libbs2b0 \
-  libcdio13 libcdparanoia0 libchromaprint0 libcrystalhd3 libdc1394-22 libdca0 \
-  libde265-0 libdvdnav4 libdvdread4 libfaad2 libfftw3-double3 libflite1 \
-  libfluidsynth1 libfribidi0 libglu1-mesa libgme0 libgsm1 \
-  libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0 \
-  libgstreamer-plugins-good1.0-0 libgstreamer1.0-0
-RUN sudo apt-get install -y x11vnc net-tools
+#  Note: these were to get livestreaming working in youtube 
+#RUN sudo apt-get install -y gstreamer1.0-fluendo-mp3 gstreamer1.0-libav \
+#  gstreamer1.0-plugins-bad gstreamer1.0-plugins-bad-faad \
+#  gstreamer1.0-plugins-bad-videoparsers gstreamer1.0-plugins-base \
+#  gstreamer1.0-plugins-ugly gstreamer1.0-plugins-ugly-amr i965-va-driver \
+#  liba52-0.7.4 libaacs0 libasound2-plugins libass5 libavcodec-extra \
+#  libavcodec-ffmpeg-extra56 libavfilter-ffmpeg5 libavformat-ffmpeg56 \
+#  libavresample-ffmpeg2 libavutil-ffmpeg54 libbdplus0 libbluray1 libbs2b0 \
+#  libcdio13 libcdparanoia0 libchromaprint0 libcrystalhd3 libdc1394-22 libdca0 \
+#  libde265-0 libdvdnav4 libdvdread4 libfaad2 libfftw3-double3 libflite1 \
+#  libfluidsynth1 libfribidi0 libglu1-mesa libgme0 libgsm1 \
+#  libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0 \
+#  libgstreamer-plugins-good1.0-0 libgstreamer1.0-0
+RUN DEBIAN_FRONTEND=noninteractive sudo -E apt-get install -y --no-install-recommends x11vnc net-tools
 RUN sudo apt-get clean
 ENV DISPLAY=:1.0
 COPY start_x /home/slitheen/start_x
