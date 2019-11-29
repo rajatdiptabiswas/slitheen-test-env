@@ -1,0 +1,7 @@
+human = read.csv("results_human.txt")
+ous = read.csv("results_ff70.csv")
+hecdf <- ecdf(human[[1]])
+oecdf <- ecdf(ous[[1]])
+par(mar=c(4,4,4,4))
+plot(oecdf, main="CDF of OUS-generated and Human-generated Bot Scores", xlab="Score", ylab="", verticals=TRUE, do.points=FALSE, col='blue', yaxs="i", xlim=c(0,100), ylim=c(0,1), cex.lab=1.5, cex.axis=1.5)
+plot(hecdf, verticals=TRUE, do.points=FALSE, add=TRUE, col='red')
