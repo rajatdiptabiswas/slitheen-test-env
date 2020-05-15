@@ -1,5 +1,2 @@
 #!/bin/bash
-
-sed -i "s/USER_ID/$(id -u)/" slitheen-docker/Dockerfile
-sed -i "s/GROUP_ID/$(id -g)/" slitheen-docker/Dockerfile
-cd slitheen-docker && docker build -t slitheen .
+cd slitheen-docker && docker build -t slitheen --build-arg USER_ID=$(id -u) --build-arg GROUP_ID=$(id -g) .

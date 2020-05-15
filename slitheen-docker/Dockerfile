@@ -1,4 +1,8 @@
 FROM ubuntu:16.04
+
+ARG USER_ID
+ARG GROUP_ID
+
 RUN apt-get update && apt-get install -y wget python python3-pip sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common npm clang clang-tools-6.0 llvm-6.0 llvm-6.0-tools
 RUN pip3 install selenium
 RUN pip3 install numpy
@@ -7,8 +11,8 @@ RUN n stable
 
 # Set up a slitheen user. 1000 and 1000 will be automatically
 # replaced by build-slitheen
-RUN groupadd -g 1000 slitheen
-RUN useradd -u 1000 -g slitheen -ms /bin/bash slitheen
+RUN groupadd -g $GROUP_ID slitheen
+RUN useradd -u $USER_ID -g slitheen -ms /bin/bash slitheen
 RUN adduser slitheen sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER slitheen
