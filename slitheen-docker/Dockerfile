@@ -17,9 +17,7 @@ ENV SHELL=/bin/bash
 
 # Firefox bootstrap: first pull web boostrap script, then run
 # ./mach bootstrap from mozilla-central
-RUN wget https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py
-RUN sudo python bootstrap.py --vcs=git --application-choice=browser --no-interactive; exit 0;
-RUN rm bootstrap.py
+RUN sudo apt-get install -y mercurial
 RUN hg clone https://hg.mozilla.org/releases/mozilla-esr60
 WORKDIR mozilla-esr60
 RUN sudo ./mach bootstrap --application-choice=browser --no-interactive; exit 0;
