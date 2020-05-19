@@ -1,9 +1,9 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 ARG USER_ID
 ARG GROUP_ID
 
-RUN apt-get update && apt-get install -y wget python python3-pip sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common npm clang clang-tools-6.0 llvm-6.0 llvm-6.0-tools
+RUN apt-get update && apt-get install -y wget python python3-pip sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common npm clang-tools-6.0 llvm-6.0 llvm-6.0-tools
 RUN pip3 install selenium
 RUN pip3 install numpy
 RUN npm install -g n
@@ -22,16 +22,15 @@ ENV SHELL=/bin/bash
 # Firefox bootstrap: first pull web boostrap script, then run
 # ./mach bootstrap from mozilla-central
 RUN sudo apt-get install -y mercurial
-RUN hg clone https://hg.mozilla.org/releases/mozilla-esr60
-WORKDIR mozilla-esr60
+RUN hg clone https://hg.mozilla.org/releases/mozilla-esr68
+WORKDIR mozilla-esr68
 RUN sudo ./mach bootstrap --application-choice=browser --no-interactive; exit 0;
 WORKDIR /home/slitheen
-RUN rm -rf mozilla-esr60
+RUN rm -rf mozilla-esr68
 
-#Set up rust dependecies (need to use v 1.26 to build esr 60
+#Set up rust dependecies
 RUN sudo ./.cargo/bin/cargo install cbindgen
-RUN sudo ./.cargo/bin/rustup install 1.26.0
-RUN sudo ./.cargo/bin/rustup default 1.26.0
+RUN /bin/bash -c "source /home/slitheen/.cargo/env"
 
 # We need openssl version 1.1.0f for the elliptic curves Firefox uses
 WORKDIR /tmp/
@@ -49,21 +48,6 @@ RUN sudo ldconfig
 
 # Install packages useful for dev work
 RUN sudo apt-get install -y tcpdump valgrind iptables telnet less vim
-
-#  Note: these were to get livestreaming working in youtube 
-# TODO: figure out what we need for 18.04
-RUN sudo apt-get install -y gstreamer1.0-fluendo-mp3 gstreamer1.0-libav \
-  gstreamer1.0-plugins-bad gstreamer1.0-plugins-bad-faad \
-  gstreamer1.0-plugins-bad-videoparsers gstreamer1.0-plugins-base \
-  gstreamer1.0-plugins-ugly gstreamer1.0-plugins-ugly-amr i965-va-driver \
-  liba52-0.7.4 libaacs0 libasound2-plugins libass5 libavcodec-extra \
-  libavcodec-ffmpeg-extra56 libavfilter-ffmpeg5 libavformat-ffmpeg56 \
-  libavresample-ffmpeg2 libavutil-ffmpeg54 libbdplus0 libbluray1 libbs2b0 \
-  libcdio13 libcdparanoia0 libchromaprint0 libcrystalhd3 libdc1394-22 libdca0 \
-  libde265-0 libdvdnav4 libdvdread4 libfaad2 libfftw3-double3 libflite1 \
-  libfluidsynth1 libfribidi0 libglu1-mesa libgme0 libgsm1 \
-  libgstreamer-plugins-bad1.0-0 libgstreamer-plugins-base1.0-0 \
-  libgstreamer-plugins-good1.0-0 libgstreamer1.0-0
 
 # Install packages and start X to get VNC working
 RUN DEBIAN_FRONTEND=noninteractive sudo -E apt-get install -y --no-install-recommends x11vnc net-tools
