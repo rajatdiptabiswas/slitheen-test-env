@@ -100,7 +100,13 @@ D. ./net_run
    
    # To start the OUS
    cd ../client/client/ous/
-   python3 slifox_driver.py
+   python3 slifox_driver.py -h | -e | -u {bv, video, random}
+	# -h := Help
+	# -e := Experiment Mode (WIP)
+	# -u := set user mode
+		# bv := Background Video mode
+		# video := Video Only mode
+		# random := Random Browsing Action mode
 
 # In C:
     ./socks
