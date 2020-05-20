@@ -1,5 +1,6 @@
 #!/bin/bash
 docker exec --privileged -u root ous route del default
+koko -D ous,veth0 2> /dev/null
 koko -d ous,veth0,172.17.31.2/16 -d relay,veth1,172.17.31.100/24 || exit 1
 docker exec --privileged -u root ous ethtool -K veth0 tso off gro off gso off tx off
 docker exec --privileged -u root relay ethtool -K eth0 tso off gro off gso off tx off
@@ -23,12 +24,12 @@ if [ $tso == on ] || [ $gso == on ] || [ $gro == on ]; then
 fi
 
 if [ $tso == on ]; then
-    echo "ethtool -K docker0 tso off"
+    echo "sudo ethtool -K docker0 tso off"
 fi
 if [ $gso == on ]; then
-    echo "ethtool -K docker0 gso off"
+    echo "sudo ethtool -K docker0 gso off"
 fi
 if [ $gro == on ]; then
-    echo "ethtool -K docker0 gro off"
+    echo "sudo ethtool -K docker0 gro off"
 fi
 
