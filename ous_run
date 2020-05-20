@@ -17,7 +17,7 @@ socks_port=$2
 . testenv_config
 
 docker network create $vnc_network_name >/dev/null 2>&1
-# docker rm ous; docker run -p 5900:5900 --name ous -it -v ${SLITHEEN_FIREFOX_REPO}:/home/iang/firefox --net=vnc slitheen /bin/bash -c 'echo "Waiting for veth to appear..."; while ! ifconfig veth0 >/dev/null 2>&1; do sleep 1; done; sleep 1; ./start_x; export SLITHEEN_PUBKEY=/home/iang/firefox/pubkey; cd firefox && ./mach run'
+
 docker rm $container_name 2>&1; 
 
 docker run --privileged -p $socks_port:1080 -p $vnc_port:5900 --name $container_name -it -v ${SLITHEEN_FIREFOX_REPO}:/home/slitheen/firefox --shm-size 256m -v ${SLITHEEN_CLIENT_REPO}:/home/slitheen/client --net=vnc slitheen /bin/bash -c './start_x; export SLITHEEN_PUBKEY=/home/slitheen/firefox/pubkey; cd firefox && bash'
