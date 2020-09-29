@@ -7,7 +7,6 @@ relay="relay_$(whoami)"
 # Get unique network names
 veth0="veth0_$(whoami)"
 veth1="veth1_$(whoami)"
-#eth0="eth0_$(whoami)"
 
 docker exec --privileged -u root $ous route del default
 koko -D $ous,$veth0 2> /dev/null
