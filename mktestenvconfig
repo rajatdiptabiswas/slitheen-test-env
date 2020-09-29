@@ -16,10 +16,10 @@ if [ -e testenv_config ]; then
         echo "SLITHEEN_RELAY_REPO not set correctly: cannot find ${SLITHEEN_RELAY_REPO}/slitheen.c"
         ret=1
     fi
-    if [ -e "${SLITHEEN_CLIENT_REPO}/socks5proxy.c" ]; then
+    if [ -e "${SLITHEEN_CLIENT_REPO}/socks.go" ]; then
         echo "SLITHEEN_CLIENT_REPO appears OK"
     else
-        echo "SLITHEEN_CLIENT_REPO not set correctly: cannot find ${SLITHEEN_CLIENT_REPO}/socks5proxy.c"
+        echo "SLITHEEN_CLIENT_REPO not set correctly: cannot find ${SLITHEEN_CLIENT_REPO}/socks.go"
         ret=1
     fi
     if [ "$ret" = "1" ]; then

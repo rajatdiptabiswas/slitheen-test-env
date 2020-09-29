@@ -1,3 +1,8 @@
+If you're running Slitheen on a remote machine, you'll need to choose a port for both vncviewer and the socks proxy. These ports should be unique per user otherwise the Docker containers won't work properly.
+
+When you ssh to your remote machine, you'll need to use the -L option with this config: -L 5900:127.0.0.1:<vnc port>.
+
+
 #### BUILDING
 
 # Instructions to build slitheen (client and proxy)
@@ -35,11 +40,14 @@ sed -i s,/somewhere/slitheen/slitheen-relay,$(cd ..; /bin/pwd)/slitheen-relay, t
 sed -i s,/somewhere/slitheen/slitheen-client,$(cd ..; /bin/pwd)/slitheen-client, testenv_config
 
 # Start the slifox docker
-./ous_run
+# [NOTE] vnc port here is the same as the vnc port used when you ssh-ed into the remote machine
+./ous_run <vnc port> <socks port>
 
     # Inside that docker, build slifox and the socks proxy and exit the
     # docker when finished
     ./mach build   # This will take a while
+    
+    # [NOTE: this is for if you're using the C client]
     cd ../client
     make
     exit
@@ -70,7 +78,7 @@ cp ../slitheen-relay/keygen/pubkey ../slitheen-client/
 
 A. ./relay_run
 
-B. ./ous_run
+B. ./ous_run <vnc port> <socks port>
 
 C. ./socks_run
 
@@ -80,7 +88,6 @@ D. ./net_run
     # [ERROR] Cannot get device udp-fragmentation-offload settings: Operation not supported: This error is expected
 
 # If on remote machine, run the following on your local machine;
-    ssh -L 5900:localhost:5900 <remote machine name>
     vncviewer localhost
 
 # If not using a remote machine:
@@ -88,7 +95,7 @@ D. ./net_run
     vncviewer localhost
 
 # In A:
-    sudo ./slitheen veth1 eth0
+    sudo ./slitheen veth1_<username> eth0
 
    # [ERROR] Failed to activate device: delete veth0 and try again
 
@@ -109,8 +116,8 @@ D. ./net_run
 		# random := Random Browsing Action mode
 
 # In C:
-    ./socks
+    go run socks.go <socks port>
 
 
-# If you start Slifox without the OUS now point your browser's SOCKS proxy to localhost:1080 while you load
+# If you start Slifox without the OUS now point your browser's SOCKS proxy to localhost:<socks port> while you load
 # youtube videos in slifox. Otherwise the OUS will load content on its own.
