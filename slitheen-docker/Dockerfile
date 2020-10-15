@@ -4,6 +4,7 @@ ARG USER_ID
 ARG GROUP_ID
 
 RUN apt-get update && apt-get install -y wget python python3-pip sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common npm clang-tools-6.0 llvm-6.0 llvm-6.0-tools
+RUN sudo apt-get install -y golang-go
 RUN pip3 install selenium
 RUN pip3 install numpy
 RUN npm install -g n
