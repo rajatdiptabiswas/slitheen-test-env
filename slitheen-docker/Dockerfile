@@ -4,7 +4,6 @@ ARG USER_ID
 ARG GROUP_ID
 
 RUN apt-get update && apt-get install -y wget python python3-pip sudo inetutils-ping libpcap0.8-dev ethtool dpkg-dev lsb-release libstartup-notification0-dev libjpeg-dev libbz2-dev libreadline-dev python-ply libvpx-dev libhunspell-dev libffi-dev libevent-dev libjsoncpp-dev locales ttf-bitstream-vera fonts-freefont-ttf fonts-dejima-mincho iso-codes software-properties-common npm clang-tools-6.0 llvm-6.0 llvm-6.0-tools
-RUN sudo apt-get install -y golang-go
 RUN pip3 install selenium
 RUN pip3 install numpy
 RUN npm install -g n
@@ -46,6 +45,11 @@ WORKDIR /tmp/
 RUN rm openssl-1.1.0f.tar.gz && rm -rf openssl-1.1.0f
 ENV LD_LIBRARY_PATH=/usr/local/lib
 RUN sudo ldconfig
+
+# Install Go v1.15
+RUN wget https://golang.org/dl/go1.15.3.linux-amd64.tar.gz --no-check-certificate
+RUN sudo tar -C /usr/local -xzf go1.15.3.linux-amd64.tar.gz
+RUN rm go1.15.3.linux-amd64.tar.gz
 
 # Install packages useful for dev work
 RUN sudo apt-get install -y tcpdump iptables telnet less vim
