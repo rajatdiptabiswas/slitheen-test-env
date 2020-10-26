@@ -23,7 +23,8 @@ ENV SHELL=/bin/bash
 # Firefox bootstrap: first pull web boostrap script, then run
 # ./mach bootstrap from mozilla-central
 RUN sudo apt-get install -y mercurial
-RUN hg clone https://hg.mozilla.org/releases/mozilla-esr68
+# Pin to firefox 68.12.0esr release
+RUN hg clone https://hg.mozilla.org/releases/mozilla-esr68/file/4a02e1ac79651ef495584c6815a0579e2a81a331
 WORKDIR mozilla-esr68
 RUN sudo ./mach bootstrap --application-choice=browser --no-interactive; exit 0;
 WORKDIR /home/slitheen
